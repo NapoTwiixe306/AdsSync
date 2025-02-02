@@ -9,7 +9,9 @@ import {
   ActivityIcon,
   ChartColumn,
   Receipt,
-  LucideChevronsUpDown
+  LucideChevronsUpDown,
+  Moon,
+  Sun
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
@@ -26,6 +28,14 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
       document.documentElement.classList.add("dark");
     }
   }, []);
+
+  const toggleSidebar = () => setIsExpanded(!isExpanded);
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem("darkMode", newDarkMode.toString());
+    document.documentElement.classList.toggle("dark");
+  };
 
 
   const role = session?.user?.role;
@@ -58,7 +68,7 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
                 <SidebarItem icon={<Settings size={24} />} text="Settings" onClick={() => handleSetActivePage("Settings")} expanded={isExpanded} />
               </>
             )}
-            {role === "Manager" && (
+            {role === "Manager" || role === "Viewer" || role === "Collaborator" && (
               <>
                 <SidebarItem icon={<LayoutDashboard size={24} />} text="Vue d'ensemble" onClick={() => handleSetActivePage("Vue d'ensemble")} expanded={isExpanded} />
                 <SidebarItem icon={<CogIcon size={24} />} text="Campagnes" onClick={() => handleSetActivePage("Campagnes")} expanded={isExpanded} />
@@ -96,6 +106,14 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
                 onClick={() => signOut()}
               >
                 Déconnexion
+              </button>
+              <button
+                onClick={toggleDarkMode}
+                className="w-full text-left p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md"
+              >
+                <span className={`${isExpanded ? "block" : "hidden"}`}>
+                  {isDarkMode ? "Mode clair" : "Mode sombre"}
+                </span>
               </button>
             </div>
           )}

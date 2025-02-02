@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import Sidebar from "@/src/components/Sidebar";
 import Overview from "./Components/Overview";
 import GestionCampagnes from "./Components/Campagnes";
+import Automatisation from "./Components/Automatisation";
 
 export default function Dash() {
   const { data: session, status } = useSession();
@@ -33,7 +34,7 @@ const renderContent = (activePage: string) => {
     case "Campagnes":
       return <GestionCampagnes/>;
     case "Automatisation":
-      return <div>Automatisation Panel</div>;
+      return <Automatisation/>;
     case "Analytics":
       return <div>Analytics Panel</div>;
     case "Facturation":
